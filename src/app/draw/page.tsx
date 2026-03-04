@@ -97,13 +97,13 @@ export default function DrawPage() {
 
                 <div className="container mx-auto px-4 py-8 max-w-5xl relative z-10">
                     {/* Header */}
-                    <div className="flex items-center justify-between mb-6">
+                    <div className="flex flex-wrap items-center gap-3 mb-6">
                         <TransitionLink href="/" className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 hover:bg-white/70 px-4 py-2 rounded-full font-bold transition-all border-2 border-transparent hover:border-gray-200">
                             <span className="material-symbols-outlined">arrow_back</span>
                             Back
                         </TransitionLink>
 
-                        <h1 className="font-display text-3xl md:text-4xl font-extrabold text-gray-900 bg-white px-6 py-3 rounded-[1.5rem] border-[3px] border-gray-900 shadow-[4px_4px_0px_0px_#111827] -rotate-1">
+                        <h1 className="font-display text-2xl md:text-4xl font-extrabold text-gray-900 bg-white px-4 md:px-6 py-2 md:py-3 rounded-[1.5rem] border-[3px] border-gray-900 shadow-[4px_4px_0px_0px_#111827] -rotate-1">
                             🖌️ Draw Your Flower
                         </h1>
 
