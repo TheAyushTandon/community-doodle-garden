@@ -13,6 +13,7 @@
 </div>
 
 ---
+"WEBSITE IS NOW LIVE!!!"
 https://community-doodle-garden-anlleevv9.vercel.app/garden
 ## ✨ What is Doodle Garden?
 
