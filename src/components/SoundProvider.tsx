@@ -27,19 +27,31 @@ export default function SoundProvider({ children }: { children: React.ReactNode 
     }, []);
 
     useEffect(() => {
-        // Tick sound on hover over interactive elements
-        const handleMouseEnter = (e: Event) => {
+        // Tick sound on hover over interactive elements — fires once per button, not per child
+        const handleMouseEnter = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
-            if (
-                target.tagName === 'A' ||
-                target.tagName === 'BUTTON' ||
-                target.closest('a') ||
-                target.closest('button') ||
-                target.closest('[role="button"]') ||
-                target.classList.contains('bubbly-btn')
-            ) {
-                playTick();
-            }
+            const related = e.relatedTarget as HTMLElement | null;
+
+            // Find the nearest interactive ancestor of the hovered element
+            const interactive = (el: HTMLElement | null): HTMLElement | null => {
+                if (!el) return null;
+                if (
+                    el.tagName === 'A' ||
+                    el.tagName === 'BUTTON' ||
+                    el.getAttribute('role') === 'button' ||
+                    el.classList.contains('bubbly-btn')
+                ) return el;
+                return interactive(el.parentElement);
+            };
+
+            const entered = interactive(target);
+            if (!entered) return;
+
+            // Only fire if we're coming from OUTSIDE this interactive element
+            // i.e. relatedTarget is not inside the same button/link
+            if (related && entered.contains(related)) return;
+
+            playTick();
         };
 
         // Start bg music on first user interaction (browser autoplay policy)
