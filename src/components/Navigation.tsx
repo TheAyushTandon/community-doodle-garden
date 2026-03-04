@@ -17,6 +17,9 @@ export default function Navigation() {
             </TransitionLink>
 
             <div className="hidden md:flex space-x-10 items-center text-lg font-extrabold">
+                <TransitionLink href="/draw" className="hover:bg-gray-100 px-5 py-2 rounded-full transition-all hover:text-primary">
+                    Draw
+                </TransitionLink>
                 <TransitionLink href="/garden" className="hover:bg-gray-100 px-5 py-2 rounded-full transition-all hover:text-primary">
                     Gallery
                 </TransitionLink>

@@ -79,3 +79,49 @@ export async function GET() {
         return NextResponse.json({ error: 'Failed to fetch user profile data' }, { status: 500 });
     }
 }
+
+// PUT /api/user/profile — update authenticated user's profile
+export async function PUT(request: Request) {
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session?.user?.email) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        const body = await request.json();
+        const { username, avatar_url, linkedin_url, github_url } = body;
+
+        // Ensure username is unique if it's being changed
+        if (username) {
+            const existingUser = await prisma.user.findUnique({
+                where: { username }
+            });
+
+            if (existingUser && existingUser.email !== session.user.email) {
+                return NextResponse.json({ error: 'Username is already taken' }, { status: 409 });
+            }
+        }
+
+        const updatedUser = await prisma.user.update({
+            where: { email: session.user.email },
+            data: {
+                username: username || undefined,
+                avatar_url: avatar_url || null,
+                linkedin_url: linkedin_url || null,
+                github_url: github_url || null,
+            },
+            select: {
+                id: true,
+                username: true,
+                avatar_url: true,
+                linkedin_url: true,
+                github_url: true,
+            }
+        });
+
+        return NextResponse.json(updatedUser);
+    } catch (error) {
+        console.error('[PUT /api/user/profile]', error);
+        return NextResponse.json({ error: 'Failed to update profile' }, { status: 500 });
+    }
+}

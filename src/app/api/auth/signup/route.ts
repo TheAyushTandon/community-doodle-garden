@@ -6,6 +6,7 @@ import { randomUUID } from 'crypto';
 export async function POST(request: Request) {
     try {
         const { username, email, password } = await request.json();
+        console.log(`📝 Signup attempt for: ${email}`);
 
         if (!email || !password) {
             return NextResponse.json({ error: 'Email and password are required.' }, { status: 400 });
@@ -27,10 +28,11 @@ export async function POST(request: Request) {
                 username: username || null,
                 email,
                 password: hashedPassword,
-                emailVerified: false,
+                emailVerified: true, // AUTO-VERIFY FOR NOW
             },
         });
 
+        console.log(`✅ User created: ${user.email}`);
         return NextResponse.json({ message: 'Account created successfully!', userId: user.id }, { status: 201 });
     } catch (error) {
         console.error('Signup error:', error);

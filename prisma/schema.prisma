@@ -2,11 +2,12 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = []
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 
 model User {
@@ -14,7 +15,7 @@ model User {
   username      String?       @unique
   email         String        @unique
   password      String
-  emailVerified Boolean       @default(false)
+  emailVerified Boolean       @default(true)
   avatar_url    String?
   linkedin_url  String?
   github_url    String?

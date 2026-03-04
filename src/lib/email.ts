@@ -1,70 +1,38 @@
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer'
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD, // Gmail App Password (not your regular password)
+    },
+})
 
-export async function sendOtpEmail(email: string, code: string) {
-    const { error } = await resend.emails.send({
-        from: 'Doodle Garden <onboarding@resend.dev>',
+export async function sendOtpEmail(email: string, otp: string): Promise<void> {
+    const mailOptions = {
+        from: `"Doodle Garden 🌸" <${process.env.GMAIL_USER}>`,
         to: email,
-        subject: `🌸 Your Doodle Garden Code: ${code}`,
+        subject: '🌸 Your Doodle Garden Verification Code',
         html: `
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body style="margin:0;padding:0;background:#f4f4f4;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;">
-    <table width="100%" cellpadding="0" cellspacing="0" style="padding:40px 20px;">
-        <tr>
-            <td align="center">
-                <table width="480" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:24px;border:3px solid #1e1e1e;box-shadow:6px 6px 0 #1e1e1e;overflow:hidden;">
-                    <!-- Header -->
-                    <tr>
-                        <td style="background:#fc8d8d;padding:32px 40px;text-align:center;">
-                            <div style="font-size:40px;margin-bottom:8px;">🌻</div>
-                            <h1 style="margin:0;font-size:28px;color:#1e1e1e;font-weight:800;">Doodle Garden</h1>
-                        </td>
-                    </tr>
-                    <!-- Body -->
-                    <tr>
-                        <td style="padding:40px;">
-                            <p style="font-size:18px;color:#333;margin:0 0 8px;font-weight:600;">Hey there, artist! 🎨</p>
-                            <p style="font-size:16px;color:#666;margin:0 0 32px;line-height:1.5;">
-                                Here's your verification code to join the garden. Enter it on the verification page:
-                            </p>
-                            
-                            <div style="background:#f7d046;border:3px solid #1e1e1e;border-radius:16px;padding:24px;text-align:center;margin:0 0 32px;box-shadow:4px 4px 0 #1e1e1e;">
-                                <span style="font-size:40px;font-weight:800;letter-spacing:12px;color:#1e1e1e;font-family:monospace;">${code}</span>
-                            </div>
-                            
-                            <p style="font-size:14px;color:#999;margin:0;line-height:1.5;">
-                                ⏰ This code expires in <strong>10 minutes</strong>.<br>
-                                If you didn't request this, just ignore this email.
-                            </p>
-                        </td>
-                    </tr>
-                    <!-- Footer -->
-                    <tr>
-                        <td style="background:#f9f9f9;padding:20px 40px;text-align:center;border-top:1px solid #eee;">
-                            <p style="font-size:12px;color:#aaa;margin:0;">
-                                © ${new Date().getFullYear()} Doodle Garden · Bloom Together 🌸
-                            </p>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-</body>
-</html>
-        `,
-    });
+            <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 32px; background: #fffdf7; border-radius: 24px; border: 3px solid #111827;">
+                <div style="text-align: center; margin-bottom: 28px;">
+                    <h1 style="font-size: 2rem; font-weight: 900; color: #111827; margin: 0;">🌸 Doodle Garden</h1>
+                    <p style="color: #6b7280; font-size: 1rem; margin-top: 6px;">Verify your email to start planting!</p>
+                </div>
 
-    if (error) {
-        console.error('⚠️ Resend Email Error (Likely Free Tier Limit):', error.message);
-        console.log(`\n🔑 [LOCAL DEV] YOUR OTP CODE IS: ${code}\n`);
-        // We return without throwing so the signup doesn't 500 block the user.
-        return;
+                <div style="background: #f5f0ff; border-radius: 16px; padding: 28px; text-align: center; margin-bottom: 24px; border: 2px solid #7c3aed;">
+                    <p style="color: #4b5563; font-size: 0.95rem; margin: 0 0 12px 0; font-weight: 600;">Your verification code is:</p>
+                    <div style="letter-spacing: 10px; font-size: 3rem; font-weight: 900; color: #7c3aed; font-family: monospace;">${otp}</div>
+                    <p style="color: #9ca3af; font-size: 0.85rem; margin: 12px 0 0 0;">Expires in 10 minutes</p>
+                </div>
+
+                <p style="color: #6b7280; font-size: 0.875rem; text-align: center;">
+                    If you didn't sign up for Doodle Garden, you can safely ignore this email.
+                </p>
+            </div>
+        `,
     }
+
+    await transporter.sendMail(mailOptions)
+    console.log(`✅ OTP email sent to ${email}`)
 }

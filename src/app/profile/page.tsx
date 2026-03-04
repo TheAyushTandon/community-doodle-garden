@@ -182,6 +182,11 @@ export default function Profile() {
     const [addingFriend, setAddingFriend] = useState(false);
     const [addFriendError, setAddFriendError] = useState('');
 
+    // Edit Profile state
+    const [isEditing, setIsEditing] = useState(false);
+    const [editData, setEditData] = useState({ username: '', avatar_url: '', linkedin_url: '', github_url: '' });
+    const [savingProfile, setSavingProfile] = useState(false);
+
     useEffect(() => {
         if (status === 'unauthenticated') {
             router.push('/login');
@@ -193,11 +198,41 @@ export default function Profile() {
                     if (d.doodles) setData(d);
                     if (d.id) setMyUid(d.id);
                     if (d.friends) setFriends(d.friends);
+                    setEditData({
+                        username: d.username || '',
+                        avatar_url: d.avatar_url || '',
+                        linkedin_url: d.linkedin_url || '',
+                        github_url: d.github_url || ''
+                    });
                     setLoading(false);
                 })
                 .catch(() => setLoading(false));
         }
     }, [status, router]);
+
+    const handleSaveProfile = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setSavingProfile(true);
+        try {
+            const res = await fetch('/api/user/profile', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(editData),
+            });
+            const d = await res.json();
+            if (res.ok) {
+                // Technically session name doesn't update until next login,
+                // but we can just close the modal.
+                setIsEditing(false);
+                alert('Profile updated successfully! 🌷');
+            } else {
+                alert(d.error || 'Failed to update profile');
+            }
+        } catch {
+            alert('Connection error');
+        }
+        setSavingProfile(false);
+    };
 
     const handleAddFriend = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -280,9 +315,18 @@ export default function Profile() {
             <div className="max-w-[1200px] mx-auto relative z-10 pt-10">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-12 border-b-8 border-slate-900 pb-6">
                     <div>
-                        <h1 className="text-6xl font-black text-slate-900 tracking-[-0.03em] drop-shadow-sm mb-2">My Sketchbook</h1>
+                        <div className="flex items-center gap-4">
+                            <h1 className="text-6xl font-black text-slate-900 tracking-[-0.03em] drop-shadow-sm mb-2">My Sketchbook</h1>
+                            <button
+                                onClick={() => setIsEditing(true)}
+                                className="w-10 h-10 rounded-full border-2 border-slate-900 hover:bg-slate-100 flex items-center justify-center transition-colors text-slate-600 mt-2"
+                                title="Edit Profile"
+                            >
+                                <span className="material-symbols-outlined text-xl">edit</span>
+                            </button>
+                        </div>
                         <p className="text-2xl text-slate-700 font-bold">
-                            Welcome, <span className="text-primary">{session.user?.name || session.user?.email}</span>!
+                            Welcome, <span className="text-primary">{editData.username || session.user?.name || session.user?.email}</span>!
                         </p>
                     </div>
                     <TransitionLink href="/" className="bubbly-btn bg-secondary text-slate-900 border-4 border-slate-900 text-xl px-6 py-2 mt-6 md:mt-0">
@@ -440,6 +484,76 @@ export default function Profile() {
                         onDeleteDoodle={handleDeleteDoodle}
                         onDeleteComment={handleDeleteComment}
                     />
+                )}
+
+                {/* Edit Profile Modal */}
+                {isEditing && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
+                        style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(6px)' }}
+                        onClick={e => { if (e.target === e.currentTarget) setIsEditing(false); }}>
+                        <div className="bg-white rounded-[2.5rem] border-[4px] border-slate-900 shadow-[10px_10px_0px_0px_#111827] p-8 max-w-sm w-full relative">
+                            <button onClick={() => setIsEditing(false)}
+                                className="absolute top-4 right-4 w-9 h-9 rounded-full border-[2px] border-slate-900 flex items-center justify-center hover:bg-slate-100 transition-colors">
+                                <span className="material-symbols-outlined text-lg">close</span>
+                            </button>
+
+                            <h2 className="text-3xl font-black text-slate-900 mb-6 text-center">Edit Profile</h2>
+
+                            <form onSubmit={handleSaveProfile} className="space-y-4">
+                                <div>
+                                    <label className="text-xs font-black uppercase text-slate-500 mb-1 block">Username</label>
+                                    <input type="text" value={editData.username} onChange={e => setEditData({ ...editData, username: e.target.value })}
+                                        className="w-full px-4 py-3 rounded-xl border-2 border-slate-900 font-bold outline-none focus:ring-2 focus:ring-primary/30"
+                                        placeholder="Your gardener name..." />
+                                </div>
+                                <div>
+                                    <label className="text-xs font-black uppercase text-slate-500 mb-2 block">Choose an Avatar</label>
+                                    <div className="grid grid-cols-3 gap-3">
+                                        {[
+                                            '/images/doodle_cat.png',
+                                            '/images/doodle_sheep.png',
+                                            '/images/smiling_sun_white.png',
+                                            'https://api.dicebear.com/7.x/fun-emoji/svg?seed=Lily',
+                                            'https://api.dicebear.com/7.x/fun-emoji/svg?seed=Rose',
+                                            'https://api.dicebear.com/7.x/fun-emoji/svg?seed=Daisy'
+                                        ].map((url) => (
+                                            <button
+                                                key={url}
+                                                type="button"
+                                                onClick={() => setEditData({ ...editData, avatar_url: url })}
+                                                className={`aspect-square rounded-2xl border-4 ${editData.avatar_url === url ? 'border-primary shadow-[4px_4px_0_0_#111827] scale-105' : 'border-transparent hover:border-slate-300 bg-slate-50 hover:bg-slate-100'} transition-all overflow-hidden flex items-center justify-center`}
+                                            >
+                                                <img src={url} alt="Avatar option" className="w-[80%] h-[80%] object-contain drop-shadow-sm" />
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="text-xs font-black uppercase text-slate-500 mb-1 flex items-center gap-1">
+                                            <span className="material-symbols-outlined text-sm">link</span> Github
+                                        </label>
+                                        <input type="text" value={editData.github_url} onChange={e => setEditData({ ...editData, github_url: e.target.value })}
+                                            className="w-full px-3 py-2 rounded-xl border-2 border-slate-900 font-bold text-sm outline-none focus:ring-2 focus:ring-primary/30"
+                                            placeholder="URL..." />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs font-black uppercase text-slate-500 mb-1 flex items-center gap-1">
+                                            <span className="material-symbols-outlined text-sm">link</span> LinkedIn
+                                        </label>
+                                        <input type="text" value={editData.linkedin_url} onChange={e => setEditData({ ...editData, linkedin_url: e.target.value })}
+                                            className="w-full px-3 py-2 rounded-xl border-2 border-slate-900 font-bold text-sm outline-none focus:ring-2 focus:ring-primary/30"
+                                            placeholder="URL..." />
+                                    </div>
+                                </div>
+
+                                <button type="submit" disabled={savingProfile}
+                                    className="w-full mt-4 bubbly-btn bg-primary text-white text-lg py-3 rounded-[1.5rem] border-[3px] border-slate-900 shadow-[4px_4px_0_0_#111827] disabled:opacity-50 flex justify-center items-center">
+                                    {savingProfile ? <span className="material-symbols-outlined animate-spin">sync</span> : 'Save Changes'}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 )}
             </div>
         </div>
