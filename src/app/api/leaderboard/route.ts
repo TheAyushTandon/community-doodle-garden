@@ -15,7 +15,16 @@ export async function GET() {
             take: 50,
         });
 
-        const ranked = doodles
+        type RankedDoodle = {
+            id: string;
+            flower_name: string;
+            image_url: string;
+            star_count: number;
+            username: string | null;
+            avatar_url: string | null;
+        };
+
+        const ranked: RankedDoodle[] = doodles
             .map((d: typeof doodles[number]) => ({
                 id: d.id,
                 flower_name: d.flower_name,
@@ -24,7 +33,7 @@ export async function GET() {
                 username: d.user.username,
                 avatar_url: d.user.avatar_url,
             }))
-            .sort((a, b) => b.star_count - a.star_count)
+            .sort((a: RankedDoodle, b: RankedDoodle) => b.star_count - a.star_count)
             .slice(0, 10);
 
         return NextResponse.json({ leaderboard: ranked });
