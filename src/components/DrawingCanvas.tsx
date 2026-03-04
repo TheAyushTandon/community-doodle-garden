@@ -22,11 +22,25 @@ const COLORS = [
 const SIZES = [3, 6, 12, 20];
 
 // ── Cursor SVGs ──────────────────────────────────────────────────────────────
-// Bucket fill cursor (bucket icon)
-const BUCKET_CURSOR = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M6 24 Q6 28 10 28 Q14 28 14 24 Q14 20 10 16 Q6 20 6 24Z' fill='%232b8cee' stroke='%23111' stroke-width='1.5'/%3E%3Crect x='12' y='4' width='14' height='4' rx='2' fill='%23fbbf24' stroke='%23111' stroke-width='1.5'/%3E%3Crect x='14' y='8' width='10' height='12' rx='1' fill='%23fbbf24' stroke='%23111' stroke-width='1.5'/%3E%3Crect x='14' y='18' width='10' height='2' rx='1' fill='%23f97316' stroke='%23111' stroke-width='1'/%3E%3Ccircle cx='10' cy='14' r='2' fill='%23111'/%3E%3Cline x1='10' y1='16' x2='10' y2='14' stroke='%23111' stroke-width='1.5'/%3E%3C/svg%3E") 4 28, crosshair`;
+const makeCursor = (svg: string, x: number, y: number) =>
+    `url("data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}") ${x} ${y}, auto`;
 
-// Eraser cursor
-const ERASER_CURSOR = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect x='4' y='14' width='20' height='12' rx='3' fill='%23f9a8d4' stroke='%23111' stroke-width='2'/%3E%3Crect x='4' y='20' width='20' height='6' rx='0 0 3 3' fill='%23ec4899' stroke='%23111' stroke-width='1'/%3E%3Crect x='4' y='20' width='6' height='6' rx='0 0 0 3' fill='%23fbbf24' stroke='%23111' stroke-width='1'/%3E%3C/svg%3E") 4 28, cell`;
+const BUCKET_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <rect x="13" y="3" width="12" height="4" rx="2" fill="#fbbf24" stroke="#111" stroke-width="1.5"/>
+  <rect x="15" y="7" width="8" height="13" rx="1" fill="#fbbf24" stroke="#111" stroke-width="1.5"/>
+  <rect x="15" y="17" width="8" height="3" rx="0" fill="#f97316" stroke="#111" stroke-width="1"/>
+  <path d="M7 22 Q7 27 11 27 Q15 27 15 22 Q15 18 11 14 Q7 18 7 22Z" fill="#2b8cee" stroke="#111" stroke-width="1.5"/>
+  <line x1="19" y1="7" x2="11" y2="14" stroke="#555" stroke-width="1.5" stroke-dasharray="2,1"/>
+</svg>`;
+
+const ERASER_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <rect x="4" y="16" width="20" height="11" rx="3" fill="#f9a8d4" stroke="#111" stroke-width="2"/>
+  <rect x="4" y="21" width="20" height="6" rx="0" fill="#ec4899" stroke="none"/>
+  <rect x="4" y="21" width="6" height="6" rx="0" fill="#fbbf24" stroke="none"/>
+  <line x1="4" y1="21" x2="24" y2="21" stroke="#111" stroke-width="1.5"/>
+  <line x1="10" y1="21" x2="10" y2="27" stroke="#111" stroke-width="1"/>
+  <rect x="4" y="16" width="20" height="11" rx="3" fill="none" stroke="#111" stroke-width="2"/>
+</svg>`;
 
 // ── Flood fill algorithm ─────────────────────────────────────────────────────
 function floodFill(
@@ -87,8 +101,18 @@ export default function DrawingCanvas({ onCapture }: DrawingCanvasProps) {
     const [redoStack, setRedoStack] = useState<ImageData[]>([]);
     const lastPos = useRef<{ x: number; y: number } | null>(null);
 
-    // Canvas cursor
-    const canvasCursor = tool === 'fill' ? BUCKET_CURSOR : tool === 'eraser' ? ERASER_CURSOR : 'crosshair';
+    // Canvas cursor — applied via useEffect so encodeURIComponent runs in browser
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        if (tool === 'fill') {
+            canvas.style.cursor = makeCursor(BUCKET_SVG, 7, 27);
+        } else if (tool === 'eraser') {
+            canvas.style.cursor = makeCursor(ERASER_SVG, 4, 26);
+        } else {
+            canvas.style.cursor = 'crosshair';
+        }
+    }, [tool]);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -328,7 +352,6 @@ export default function DrawingCanvas({ onCapture }: DrawingCanvasProps) {
                     width={800}
                     height={560}
                     className="w-full h-auto block"
-                    style={{ cursor: canvasCursor }}
                     onMouseDown={startDraw}
                     onMouseMove={draw}
                     onMouseUp={stopDraw}
