@@ -2,20 +2,20 @@ import TransitionLink from './TransitionLink';
 
 export default function Footer() {
     return (
-        <footer className="bg-white border-t border-gray-100 mt-auto">
+        <footer className="bg-gray-950 border-t border-gray-800 mt-auto">
             <div className="container mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-center gap-6">
-                <div className="flex items-center gap-2 font-display text-xl font-extrabold text-gray-900">
+                <div className="flex items-center gap-2 font-display text-xl font-extrabold text-white">
                     <span className="material-symbols-outlined text-primary">local_florist</span>
                     Doodle Garden
                 </div>
 
                 <div className="text-gray-500 text-sm font-semibold">
-                    © {new Date().getFullYear()} Bloom Together. Built with React & GSAP.
+                    © {new Date().getFullYear()} Bloom Together. Built with React &amp; GSAP.
                 </div>
 
-                <div className="flex gap-4 sm:gap-6 items-center text-gray-400">
-                    <TransitionLink href="/author" className="bubbly-btn bg-pink-100 text-gray-900 !px-4 !py-1.5 !text-sm border-[2px] shadow-[2px_2px_0px_0px_#111827] hover:shadow-[1px_1px_0px_0px_#111827] flex items-center gap-1.5 mr-2">
-                        <span className="material-symbols-outlined text-base text-pink-500">waving_hand</span>
+                <div className="flex gap-4 sm:gap-6 items-center text-gray-500">
+                    <TransitionLink href="/author" className="bubbly-btn bg-white/10 text-white !px-4 !py-1.5 !text-sm border-[2px] border-gray-600 shadow-[2px_2px_0px_0px_#030712] hover:shadow-[1px_1px_0px_0px_#030712] flex items-center gap-1.5 mr-2">
+                        <span className="material-symbols-outlined text-base text-pink-400">waving_hand</span>
                         About Creator
                     </TransitionLink>
                     <a

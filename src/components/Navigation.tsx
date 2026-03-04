@@ -33,12 +33,12 @@ export default function Navigation() {
     return (
         <>
             <style>{menuSlideDown}</style>
-            <nav className="bg-white text-gray-900 shadow-sm px-4 md:px-6 py-3 md:py-4 flex justify-between items-center z-50 relative border-b border-gray-100 font-display">
+            <nav className="bg-gray-950 text-white shadow-sm px-4 md:px-6 py-3 md:py-4 flex justify-between items-center z-50 relative border-b border-gray-800 font-display">
                 {/* Logo */}
                 <TransitionLink
                     href="/"
                     onClick={closeMenu}
-                    className="text-xl md:text-3xl tracking-tight flex items-center gap-2 md:gap-3 hover:bg-gray-100 px-3 md:px-4 py-1.5 md:py-2 rounded-full transition-all font-extrabold"
+                    className="text-xl md:text-3xl tracking-tight flex items-center gap-2 md:gap-3 hover:bg-white/10 px-3 md:px-4 py-1.5 md:py-2 rounded-full transition-all font-extrabold"
                 >
                     <span className="material-symbols-outlined text-primary text-2xl md:text-4xl">local_florist</span>
                     <span className="hidden sm:inline">Doodle Garden</span>
@@ -47,11 +47,11 @@ export default function Navigation() {
 
                 {/* Desktop nav links */}
                 <div className="hidden md:flex space-x-10 items-center text-lg font-extrabold">
-                    <TransitionLink href="/draw" className="hover:bg-gray-100 px-5 py-2 rounded-full transition-all hover:text-primary">Draw</TransitionLink>
-                    <TransitionLink href="/garden" className="hover:bg-gray-100 px-5 py-2 rounded-full transition-all hover:text-primary">Gallery</TransitionLink>
-                    <TransitionLink href="/about" className="hover:bg-gray-100 px-5 py-2 rounded-full transition-all hover:text-primary">How it works</TransitionLink>
+                    <TransitionLink href="/draw" className="hover:bg-white/10 px-5 py-2 rounded-full transition-all hover:text-primary">Draw</TransitionLink>
+                    <TransitionLink href="/garden" className="hover:bg-white/10 px-5 py-2 rounded-full transition-all hover:text-primary">Gallery</TransitionLink>
+                    <TransitionLink href="/about" className="hover:bg-white/10 px-5 py-2 rounded-full transition-all hover:text-primary">How it works</TransitionLink>
 
-                    {status === 'loading' && <div className="w-24 h-10 bg-gray-100 rounded-full animate-pulse" />}
+                    {status === 'loading' && <div className="w-24 h-10 bg-white/10 rounded-full animate-pulse" />}
 
                     {status === 'authenticated' && session?.user && (
                         <>
@@ -64,7 +64,7 @@ export default function Navigation() {
                             </TransitionLink>
                             <button
                                 onClick={() => signOut({ callbackUrl: '/' })}
-                                className="bg-gray-100 text-gray-800 px-6 py-2.5 rounded-full font-bold hover:bg-gray-200 transition-colors"
+                                className="bg-white/10 text-white px-6 py-2.5 rounded-full font-bold hover:bg-white/20 transition-colors"
                             >
                                 Sign Out
                             </button>
@@ -84,7 +84,7 @@ export default function Navigation() {
 
                 {/* Mobile hamburger button */}
                 <button
-                    className="md:hidden text-gray-800 focus:outline-none p-2 rounded-full hover:bg-gray-100 transition-colors"
+                    className="md:hidden text-white focus:outline-none p-2 rounded-full hover:bg-white/10 transition-colors"
                     onClick={() => setMenuOpen(!menuOpen)}
                     aria-label="Toggle menu"
                 >
@@ -95,30 +95,30 @@ export default function Navigation() {
 
                 {/* Mobile dropdown menu */}
                 {menuOpen && (
-                    <div className="menu-slide-down md:hidden absolute top-full left-0 right-0 bg-white border-b-4 border-gray-900 shadow-[0_8px_0_0_#111827] z-50 overflow-hidden">
+                    <div className="menu-slide-down md:hidden absolute top-full left-0 right-0 bg-gray-950 border-b-4 border-gray-700 shadow-[0_8px_0_0_#030712] z-50 overflow-hidden">
                         <div className="menu-item-fade flex flex-col font-extrabold text-lg">
-                            <TransitionLink href="/draw" onClick={closeMenu} className="flex items-center gap-3 px-6 py-4 hover:bg-gray-50 border-b border-gray-100 transition-colors">
+                            <TransitionLink href="/draw" onClick={closeMenu} className="flex items-center gap-3 px-6 py-4 hover:bg-white/10 border-b border-gray-800 transition-colors text-white">
                                 <span className="material-symbols-outlined text-primary">brush</span>
                                 Draw
                             </TransitionLink>
-                            <TransitionLink href="/garden" onClick={closeMenu} className="flex items-center gap-3 px-6 py-4 hover:bg-gray-50 border-b border-gray-100 transition-colors">
+                            <TransitionLink href="/garden" onClick={closeMenu} className="flex items-center gap-3 px-6 py-4 hover:bg-white/10 border-b border-gray-800 transition-colors text-white">
                                 <span className="material-symbols-outlined text-primary">park</span>
                                 Gallery
                             </TransitionLink>
-                            <TransitionLink href="/about" onClick={closeMenu} className="flex items-center gap-3 px-6 py-4 hover:bg-gray-50 border-b border-gray-100 transition-colors">
+                            <TransitionLink href="/about" onClick={closeMenu} className="flex items-center gap-3 px-6 py-4 hover:bg-white/10 border-b border-gray-800 transition-colors text-white">
                                 <span className="material-symbols-outlined text-primary">help_outline</span>
                                 How it works
                             </TransitionLink>
 
                             {status === 'authenticated' && session?.user && (
                                 <>
-                                    <TransitionLink href="/profile" onClick={closeMenu} className="flex items-center gap-3 px-6 py-4 hover:bg-gray-50 border-b border-gray-100 transition-colors text-secondary font-bold">
+                                    <TransitionLink href="/profile" onClick={closeMenu} className="flex items-center gap-3 px-6 py-4 hover:bg-white/10 border-b border-gray-800 transition-colors text-secondary font-bold">
                                         <span className="material-symbols-outlined">face</span>
                                         {session.user.name || 'My Profile'}
                                     </TransitionLink>
                                     <button
                                         onClick={() => { closeMenu(); signOut({ callbackUrl: '/' }); }}
-                                        className="flex items-center gap-3 px-6 py-4 hover:bg-red-50 text-red-500 transition-colors w-full text-left"
+                                        className="flex items-center gap-3 px-6 py-4 hover:bg-red-950/50 text-red-400 transition-colors w-full text-left"
                                     >
                                         <span className="material-symbols-outlined">logout</span>
                                         Sign Out
