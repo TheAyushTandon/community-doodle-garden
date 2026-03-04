@@ -10,18 +10,18 @@ const menuSlideDown = `
   to   { opacity: 1; transform: translateY(0)     scaleY(1);    }
 }
 .menu-slide-down {
-  animation: menuSlideDown 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: menuSlideDown 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   transform-origin: top;
 }
 .menu-item-fade > * {
   opacity: 0;
-  animation: menuSlideDown 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: menuSlideDown 0.30s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-.menu-item-fade > *:nth-child(1) { animation-delay: 0.03s; }
-.menu-item-fade > *:nth-child(2) { animation-delay: 0.07s; }
-.menu-item-fade > *:nth-child(3) { animation-delay: 0.11s; }
-.menu-item-fade > *:nth-child(4) { animation-delay: 0.15s; }
-.menu-item-fade > *:nth-child(5) { animation-delay: 0.18s; }
+.menu-item-fade > *:nth-child(1) { animation-delay: 0.06s; }
+.menu-item-fade > *:nth-child(2) { animation-delay: 0.12s; }
+.menu-item-fade > *:nth-child(3) { animation-delay: 0.18s; }
+.menu-item-fade > *:nth-child(4) { animation-delay: 0.24s; }
+.menu-item-fade > *:nth-child(5) { animation-delay: 0.30s; }
 `;
 
 export default function Navigation() {

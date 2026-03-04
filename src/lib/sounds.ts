@@ -231,7 +231,7 @@ function playMelodyLoop() {
 
     if (!bgMusicGain) {
         bgMusicGain = ctx.createGain();
-        bgMusicGain.gain.setValueAtTime(0.055, ctx.currentTime);
+        bgMusicGain.gain.setValueAtTime(0.040, ctx.currentTime);
         bgMusicGain.connect(ctx.destination);
     }
 
