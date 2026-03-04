@@ -1,26 +1,130 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-primary: #2b8cee;
+  /* Original blue */
+  --color-secondary: #fc8d8d;
+  /* Original red/pink */
+  --color-tertiary: #f7d046;
+  /* Original yellow */
+  --color-background-light: #f4f4f4;
+  --color-background-dark: #121212;
+  --color-text-light: #1e1e1e;
+  --color-text-dark: #f5f5f5;
+  --font-display: var(--font-display), cursive;
+  --font-body: var(--font-body), sans-serif;
+  --radius: 9999px;
+  --shadow-soft: 0 8px 16px -4px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --shadow-soft-lg: 0 16px 24px -2px rgba(0, 0, 0, 0.08), 0 8px 10px -4px rgba(0, 0, 0, 0.04);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  body {
+    @apply bg-background-light text-text-light font-body transition-colors duration-300 antialiased;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='0 0 28 28'%3E%3Cpolygon points='0,0 0.5,4 4,0.5' fill='%23555' stroke='%23222' stroke-width='0.5'/%3E%3Cpolygon points='0.5,4 4,0.5 7,3 3,7' fill='%23fde68a'/%3E%3Cpolygon points='3,7 7,3 17,13 13,17' fill='%23fbbf24' stroke='%23333' stroke-width='1'/%3E%3Cpolygon points='13,17 17,13 19,15 15,19' fill='%23bbb' stroke='%23333' stroke-width='1'/%3E%3Cpolygon points='15,19 19,15 22,18 18,22' fill='%23f9a8d4' stroke='%23333' stroke-width='1'/%3E%3C/svg%3E") 0 0, auto !important;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  canvas {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='0 0 28 28'%3E%3Cpolygon points='0,0 0.5,4 4,0.5' fill='%23555' stroke='%23222' stroke-width='0.5'/%3E%3Cpolygon points='0.5,4 4,0.5 7,3 3,7' fill='%23fde68a'/%3E%3Cpolygon points='3,7 7,3 17,13 13,17' fill='%23fbbf24' stroke='%23333' stroke-width='1'/%3E%3Cpolygon points='13,17 17,13 19,15 15,19' fill='%23bbb' stroke='%23333' stroke-width='1'/%3E%3Cpolygon points='15,19 19,15 22,18 18,22' fill='%23f9a8d4' stroke='%23333' stroke-width='1'/%3E%3C/svg%3E") 0 0, auto !important;
+  }
+
+  a,
+  button,
+  [role="button"],
+  .bubbly-btn,
+  .doodle-float,
+  .force-pointer,
+  body.force-pointer canvas {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 48 48'%3E%3Crect x='8' y='12' width='32' height='24' rx='6' fill='%234ade80' stroke='%23333' stroke-width='2'/%3E%3Crect x='8' y='22' width='32' height='3' fill='%23333' opacity='0.12'/%3E%3Ccircle cx='20' cy='20' r='1.8' fill='%23333'/%3E%3Ccircle cx='30' cy='20' r='1.8' fill='%23333'/%3E%3Cpath d='M22 27 Q25 30 28 27' stroke='%23333' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3Cellipse cx='14' cy='28' rx='2.5' ry='1.5' fill='%23a7f3d0' opacity='0.5'/%3E%3Crect x='12' y='14' width='6' height='5' rx='2' fill='white' opacity='0.3'/%3E%3C/svg%3E") 32 32, pointer !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.wave-bottom {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23F7D046' fill-opacity='1' d='M0,160L48,170.7C96,181,192,203,288,197.3C384,192,480,160,576,160C672,160,768,192,864,213.3C960,235,1056,245,1152,229.3C1248,213,1344,171,1392,149.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+  background-size: cover;
+  background-position: bottom;
+  background-repeat: no-repeat;
+}
+
+.bg-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.03'%3E%3Cpath d='M30 20c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z'/%3E%3Cpath d='M30 10c-2.8 0-5 2.2-5-5h-2c0-3.9 3.1-7 7-7s7 3.1 7 7h-2c0-2.8-2.2-5-5-5z'/%3E%3Cpath d='M30 40c-2.8 0-5-2.2-5-5h-2c0 3.9 3.1 7 7 7s7-3.1 7-7h-2c0 2.8-2.2 5-5 5z'/%3E%3Cpath d='M15 30c0-2.8 2.2-5 5-5v-2c-3.9 0-7 3.1-7 7s3.1 7 7 7v-2c-2.8 0-5-2.2-5-5z'/%3E%3Cpath d='M45 30c0-2.8-2.2-5-5-5v-2c3.9 0 7 3.1 7 7s-3.1 7-7 7v-2c2.8 0 5-2.2 5-5z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Hand-drawn button utility class */
+.bubbly-btn {
+  @apply relative inline-flex items-center justify-center font-display font-bold px-8 py-3 rounded-full overflow-hidden transition-all duration-300 shadow-soft border-[3px] border-text-light hover:shadow-[0_4px_0_0_#1e1e1e] hover:-translate-y-1 active:translate-y-0 active:shadow-none;
+}
+
+/* Falling petal animation */
+@keyframes petalFall {
+  0% {
+    transform: translateY(0) translateX(0) rotate(var(--start-rot, 0deg));
+    opacity: 0;
+  }
+
+  5% {
+    opacity: 1;
+  }
+
+  25% {
+    transform: translateY(25vh) translateX(var(--sway, 50px)) rotate(calc(var(--start-rot, 0deg) + 90deg));
+  }
+
+  50% {
+    transform: translateY(50vh) translateX(calc(var(--sway, 50px) * -0.7)) rotate(calc(var(--start-rot, 0deg) + 200deg));
+  }
+
+  75% {
+    transform: translateY(75vh) translateX(var(--sway, 50px)) rotate(calc(var(--start-rot, 0deg) + 300deg));
+  }
+
+  95% {
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: translateY(110vh) translateX(calc(var(--sway, 50px) * -0.5)) rotate(calc(var(--start-rot, 0deg) + 400deg));
+    opacity: 0;
+  }
+}
+
+.petal-fall {
+  animation: petalFall linear infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes doodleFloat {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--doodle-rot, 0deg));
+  }
+
+  50% {
+    transform: translateY(-8px) rotate(calc(var(--doodle-rot, 0deg) + 3deg));
+  }
+}
+
+.doodle-float {
+  animation: doodleFloat 3s ease-in-out infinite;
+  transition: filter 0.2s ease;
+}
+
+.doodle-float:hover {
+  filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.6)) brightness(1.1);
+}
+
+.doodle-float:nth-child(2) {
+  animation-delay: 0.7s;
+  animation-duration: 3.5s;
+}
+
+.doodle-float:nth-child(3) {
+  animation-delay: 1.3s;
+  animation-duration: 4s;
+}
+
+.doodle-float:nth-child(4) {
+  animation-delay: 0.4s;
+  animation-duration: 2.8s;
 }

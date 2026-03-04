@@ -1,0 +1,6 @@
+PRAGMA foreign_keys = ON;
+DELETE FROM Interaction WHERE doodle_id IN (SELECT id FROM Doodle WHERE user_id != '3ef34c23-26d4-450a-aedc-607616813124');
+DELETE FROM Interaction WHERE user_id != '3ef34c23-26d4-450a-aedc-607616813124';
+DELETE FROM Doodle WHERE user_id != '3ef34c23-26d4-450a-aedc-607616813124';
+DELETE FROM _Friends WHERE A != '3ef34c23-26d4-450a-aedc-607616813124' OR B != '3ef34c23-26d4-450a-aedc-607616813124';
+DELETE FROM User WHERE id != '3ef34c23-26d4-450a-aedc-607616813124';

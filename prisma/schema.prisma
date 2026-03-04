@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id            String        @id @default(uuid())
+  username      String?       @unique
+  email         String        @unique
+  password      String
+  emailVerified Boolean       @default(false)
+  avatar_url    String?
+  linkedin_url  String?
+  github_url    String?
+  createdAt     DateTime      @default(now())
+  doodles       Doodle[]
+  interactions  Interaction[]
+  
+  // Many-to-many relationship for friends
+  friends       User[] @relation("Friends")
+  friendOf      User[] @relation("Friends")
+}
+
+model Otp {
+  id        String   @id @default(uuid())
+  email     String
+  code      String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model Doodle {
+  id           String        @id @default(uuid())
+  user_id      String
+  image_url    String        // Cloudinary/S3 URL or Base64
+  flower_name  String
+  coord_x      Float
+  coord_y      Float
+  timestamp    DateTime      @default(now())
+  
+  user         User          @relation(fields: [user_id], references: [id])
+  interactions Interaction[]
+}
+
+model Interaction {
+  id         String   @id @default(uuid())
+  doodle_id  String
+  user_id    String
+  type       String   // e.g., "STAR", "COMMENT"
+  content    String?  // Optional for STARS, required for COMMENTs
+  
+  doodle     Doodle   @relation(fields: [doodle_id], references: [id])
+  user       User     @relation(fields: [user_id], references: [id])
+}
