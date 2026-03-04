@@ -60,8 +60,8 @@ export default function GlobalShutter() {
                 </div>
             </div>
 
-            {/* ── Single shared progress bar — always visible at bottom ── */}
-            <div className="shutter-sticker absolute bottom-8 left-1/2 -translate-x-1/2 w-56 md:w-64 flex flex-col gap-2 z-10">
+            {/* ── Single shared progress bar — always visible, not a shutter-sticker ── */}
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-56 md:w-64 flex flex-col gap-2 z-10">
                 <div className="rounded-full border-2 border-slate-900 overflow-hidden p-[2px] shadow-inner h-5 md:h-6 bg-white">
                     <div id="shutter-progress" className="h-full rounded-full bg-[#2bee6c] border-r-2 border-slate-900" style={{ width: '0%' }} />
                 </div>
