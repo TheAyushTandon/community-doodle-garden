@@ -3,6 +3,13 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { prisma } from '@/lib/prisma';
 
+type Interaction = {
+    id: string;
+    type: string;
+    content: string | null;
+    user: { username: string | null; email: string };
+};
+
 // GET /api/doodles/[id] — fetch single doodle with interactions
 export async function GET(
     _req: NextRequest,
@@ -30,11 +37,11 @@ export async function GET(
         const session = await getServerSession(authOptions);
         const currentUserEmail = session?.user?.email;
 
-        const stars = doodle.interactions.filter((i: { type: string }) => i.type === 'STAR');
-        const comments = doodle.interactions.filter((i: { type: string }) => i.type === 'COMMENT');
+        const stars = doodle.interactions.filter((i: Interaction) => i.type === 'STAR');
+        const comments = doodle.interactions.filter((i: Interaction) => i.type === 'COMMENT');
 
         const has_starred = currentUserEmail
-            ? stars.some(star => star.user?.email === currentUserEmail)
+            ? stars.some((star: Interaction) => star.user?.email === currentUserEmail)
             : false;
 
         return NextResponse.json({
@@ -44,7 +51,7 @@ export async function GET(
             star_count: stars.length,
             has_starred,
             user: doodle.user,
-            comments: comments.map(c => ({
+            comments: comments.map((c: Interaction) => ({
                 id: c.id,
                 content: c.content,
                 username: c.user.username,

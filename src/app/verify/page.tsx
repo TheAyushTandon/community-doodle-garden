@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, Suspense } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import TransitionLink from '@/components/TransitionLink';
 
-export default function VerifyPage() {
+function VerifyContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const email = searchParams.get('email') || '';
@@ -238,5 +238,17 @@ export default function VerifyPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function VerifyPage() {
+    return (
+        <Suspense fallback={
+            <div className="flex-1 flex items-center justify-center bg-primary">
+                <span className="material-symbols-outlined text-6xl text-white animate-spin">progress_activity</span>
+            </div>
+        }>
+            <VerifyContent />
+        </Suspense>
     );
 }
