@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
         const total = await prisma.doodle.count();
 
         return NextResponse.json({
-            doodles: doodles.map(d => ({
+            doodles: doodles.map((d: typeof doodles[number]) => ({
                 id: d.id,
                 user_id: d.user_id,           // needed for golden ring
                 image_url: d.image_url,

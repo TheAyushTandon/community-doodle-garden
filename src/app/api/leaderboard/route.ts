@@ -16,7 +16,7 @@ export async function GET() {
         });
 
         const ranked = doodles
-            .map(d => ({
+            .map((d: typeof doodles[number]) => ({
                 id: d.id,
                 flower_name: d.flower_name,
                 image_url: d.image_url,

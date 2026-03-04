@@ -40,9 +40,9 @@ export async function GET() {
 
         let totalStarsReceived = 0;
 
-        const formattedDoodles = user.doodles.map(doodle => {
-            const stars = doodle.interactions.filter(i => i.type === 'STAR');
-            const comments = doodle.interactions.filter(i => i.type === 'COMMENT');
+        const formattedDoodles = user.doodles.map((doodle: typeof user.doodles[number]) => {
+            const stars = doodle.interactions.filter((i: { type: string }) => i.type === 'STAR');
+            const comments = doodle.interactions.filter((i: { type: string }) => i.type === 'COMMENT');
 
             totalStarsReceived += stars.length;
 
@@ -54,7 +54,7 @@ export async function GET() {
                 coord_y: doodle.coord_y,
                 timestamp: doodle.timestamp,
                 star_count: stars.length,
-                comments: comments.map(c => ({
+                comments: comments.map((c: { id: string; content: string | null; user: { username: string | null } }) => ({
                     id: c.id,
                     content: c.content,
                     username: c.user.username,
