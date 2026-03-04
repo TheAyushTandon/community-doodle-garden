@@ -30,8 +30,8 @@ export async function GET(
         const session = await getServerSession(authOptions);
         const currentUserEmail = session?.user?.email;
 
-        const stars = doodle.interactions.filter(i => i.type === 'STAR');
-        const comments = doodle.interactions.filter(i => i.type === 'COMMENT');
+        const stars = doodle.interactions.filter((i: { type: string }) => i.type === 'STAR');
+        const comments = doodle.interactions.filter((i: { type: string }) => i.type === 'COMMENT');
 
         const has_starred = currentUserEmail
             ? stars.some(star => star.user?.email === currentUserEmail)
