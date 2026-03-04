@@ -33,7 +33,7 @@ export function playTick() {
         osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.04);
         osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.08);
 
-        gain.gain.setValueAtTime(0.08, ctx.currentTime);
+        gain.gain.setValueAtTime(0.35, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
 
         osc.connect(gain);
@@ -67,7 +67,7 @@ export function playSwooshDown() {
         filter.frequency.exponentialRampToValueAtTime(200, ctx.currentTime + 0.35);
 
         const gain = ctx.createGain();
-        gain.gain.setValueAtTime(0.12, ctx.currentTime);
+        gain.gain.setValueAtTime(0.45, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
 
         noise.connect(filter);
@@ -103,8 +103,8 @@ export function playSwooshUp() {
         filter.frequency.exponentialRampToValueAtTime(4000, ctx.currentTime + 0.3);
 
         const gain = ctx.createGain();
-        gain.gain.setValueAtTime(0.05, ctx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 0.15);
+        gain.gain.setValueAtTime(0.18, ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.15);
         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
 
         noise.connect(filter);
