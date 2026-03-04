@@ -615,26 +615,26 @@ export default function GardenPage() {
                 <TransitionLink href="/"
                     className="bubbly-btn bg-white text-gray-800 border-[3px] border-gray-900 shadow-[4px_4px_0_0_#111827] flex items-center gap-2 text-sm">
                     <span className="material-symbols-outlined text-base">home</span>
-                    Home
+                    <span className="hidden sm:inline">Home</span>
                 </TransitionLink>
                 <TransitionLink href="/draw"
                     className="bubbly-btn bg-secondary text-gray-900 border-[3px] border-gray-900 shadow-[4px_4px_0_0_#111827] flex items-center gap-2 text-base">
                     <span className="material-symbols-outlined">brush</span>
-                    Plant a Flower
+                    <span className="hidden sm:inline">Plant a Flower</span>
                 </TransitionLink>
             </div>
 
             {/* HUD — Top Right (flower count + leaderboard toggle) */}
             {!showLeaderboard && (
                 <div className="absolute top-4 right-4 z-10 flex gap-2 items-center">
-                    <div className="bg-white/90 rounded-[1.5rem] border-[3px] border-gray-900 shadow-[4px_4px_0_0_#111827] px-4 py-2 font-display font-bold text-gray-700 text-sm flex items-center gap-2 backdrop-blur-sm">
+                    <div className="hidden sm:flex bg-white/90 rounded-[1.5rem] border-[3px] border-gray-900 shadow-[4px_4px_0_0_#111827] px-4 py-2 font-display font-bold text-gray-700 text-sm items-center gap-2 backdrop-blur-sm">
                         <span className="material-symbols-outlined text-primary text-base">local_florist</span>
                         {loading ? '…' : doodles.length} flowers growing
                     </div>
                     <button onClick={() => setShowLeaderboard(true)}
                         className="bubbly-btn bg-secondary text-gray-900 border-[3px] border-gray-900 shadow-[4px_4px_0_0_#111827] flex items-center gap-2 text-sm">
                         <span className="material-symbols-outlined">emoji_events</span>
-                        Leaderboard
+                        <span className="hidden sm:inline">Leaderboard</span>
                     </button>
                 </div>
             )}
@@ -643,11 +643,12 @@ export default function GardenPage() {
             {showLeaderboard && <Leaderboard onClose={() => setShowLeaderboard(false)} onSelect={handleLeaderSelect} />}
 
             {/* Bottom hint */}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10">
-                <div className="bg-white/80 rounded-full border-[2px] border-gray-900 shadow-[3px_3px_0_0_#111827] px-5 py-2 font-display font-bold text-gray-600 text-sm backdrop-blur-sm flex items-center gap-2">
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 w-[90vw] max-w-lg">
+                <div className="bg-white/80 rounded-full border-[2px] border-gray-900 shadow-[3px_3px_0_0_#111827] px-4 py-2 font-display font-bold text-gray-600 text-xs sm:text-sm backdrop-blur-sm flex items-center justify-center gap-2 text-center">
                     <span className="material-symbols-outlined text-sm">drag_pan</span>
-                    Drag to rotate · Scroll to zoom · Click flowers to inspect
-                    {currentUserId && <span className="text-yellow-600 ml-1">· Gold ring = your flower 🌟</span>}
+                    <span className="hidden sm:inline">Drag to rotate · Scroll to zoom · Click flowers to inspect</span>
+                    <span className="sm:hidden">Drag · Pinch · Tap flowers</span>
+                    {currentUserId && <span className="text-yellow-600 ml-1 hidden sm:inline">· Gold ring = your flower 🌟</span>}
                 </div>
             </div>
 
