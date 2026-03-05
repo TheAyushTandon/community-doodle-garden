@@ -99,7 +99,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A([User clicks Draw]) --> B[/draw page loads]
+    A([User clicks Draw]) --> B[Draw page loads]
     B --> C[DrawingCanvas component]
     C --> D[User draws with brush/eraser]
     D --> E[Save canvas as PNG/Base64]
