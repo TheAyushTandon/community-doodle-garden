@@ -14,7 +14,7 @@
 
 ---
 "WEBSITE IS NOW LIVE!!!"
-[https://community-doodle-garden-anlleevv9.vercel.app/](https://bloomtogether.vercel.app/)
+[Click Here!](https://bloomtogether.vercel.app/)
 ## ✨ What is Doodle Garden?
 
 **Bloom Together** is a creative, community-driven web app where users:
