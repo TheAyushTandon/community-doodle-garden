@@ -1,8 +1,8 @@
 'use client';
 
 import { useRef, useMemo, Suspense, useState, useCallback, useEffect } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Billboard, Html } from '@react-three/drei';
+import { Canvas, useFrame, extend } from '@react-three/fiber';
+import { OrbitControls, Billboard, Html, Outlines } from '@react-three/drei';
 import { useSession } from 'next-auth/react';
 import * as THREE from 'three';
 import TransitionLink from '@/components/TransitionLink';
@@ -98,12 +98,12 @@ function GlobeOutline() {
     );
 }
 
-// Atmosphere (very subtle inner glow, not the thick outline)
+// Atmosphere (subtle outer glow)
 function Atmosphere() {
     return (
         <mesh>
             <sphereGeometry args={[GLOBE_R * 1.09, 48, 48]} />
-            <meshStandardMaterial color="#a8e4ff" transparent opacity={0.07} side={THREE.BackSide} depthWrite={false} />
+            <meshStandardMaterial color="#4f86f7" transparent opacity={0.12} side={THREE.BackSide} depthWrite={false} />
         </mesh>
     );
 }
@@ -149,7 +149,7 @@ function Clouds() {
                 <Billboard key={i} position={cloud.pos}>
                     <mesh>
                         <planeGeometry args={[cloud.scale * 2.5, cloud.scale * 1.4]} />
-                        <meshBasicMaterial map={cloudTex} transparent alphaTest={0.1} depthWrite={false} />
+                        <meshBasicMaterial map={cloudTex} color="#b3d4ff" transparent alphaTest={0.1} opacity={0.85} depthWrite={false} />
                     </mesh>
                 </Billboard>
             ))}
@@ -251,9 +251,9 @@ function FlowerPin({ doodle, onSelect, isOwner }: { doodle: Doodle; onSelect: (d
 function Scene({ doodles, onSelect, currentUserId }: { doodles: Doodle[]; onSelect: (d: Doodle) => void; currentUserId?: string }) {
     return (
         <>
-            <ambientLight intensity={1.4} />
-            <directionalLight position={[6, 8, 4]} intensity={1.8} castShadow />
-            <directionalLight position={[-4, -2, -4]} intensity={0.4} color="#a8d8ff" />
+            <ambientLight intensity={1.2} color="#8fb3ff" />
+            <directionalLight position={[6, 8, 4]} intensity={2.0} color="#ffeedd" castShadow />
+            <directionalLight position={[-4, -2, -4]} intensity={0.6} color="#4f86f7" />
             <Globe />
             <GlobeOutline />
             <Atmosphere />
@@ -600,11 +600,11 @@ export default function GardenPage() {
     );
 
     return (
-        <div className="flex-1 relative overflow-hidden" style={{ background: '#bde8f7' }}>
+        <div className="flex-1 relative overflow-hidden bg-slate-900">
             {/* 3D Globe Canvas */}
             <Canvas camera={{ position: [0, 0, 7], fov: 55 }} shadows gl={{ antialias: true, alpha: false }}
                 style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }}>
-                <color attach="background" args={['#bde8f7']} />
+                <color attach="background" args={['#0f172a']} />
                 <Suspense fallback={null}>
                     <Scene doodles={doodles} onSelect={handleSelect} currentUserId={currentUserId} />
                 </Suspense>
