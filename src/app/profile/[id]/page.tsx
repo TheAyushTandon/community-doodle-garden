@@ -177,7 +177,7 @@ export default function PublicProfile() {
                                 <p className="text-xl font-bold text-slate-400">This gardener hasn't planted any flowers yet.</p>
                             </div>
                         ) : (
-                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 pt-2">
                                 {data.doodles.map(doodle => (
                                     <button
                                         key={doodle.id}

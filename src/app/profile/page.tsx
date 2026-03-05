@@ -438,12 +438,12 @@ export default function Profile() {
                                 </TransitionLink>
                             </div>
                         ) : (
-                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 custom-scrollbar max-h-[60vh] overflow-y-auto pr-2 pb-2">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 pt-2 custom-scrollbar max-h-[60vh] overflow-y-auto pr-2 pb-2">
                                 {data.doodles.map(doodle => (
                                     <button
                                         key={doodle.id}
                                         onClick={() => setSelectedDoodle(doodle)}
-                                        className="group relative aspect-square bg-gray-50 rounded-2xl border-2 border-gray-900 cursor-pointer overflow-hidden transition-all hover:-translate-y-1 hover:shadow-[4px_4px_0_0_#111827]"
+                                        className="group relative aspect-square bg-gray-50 rounded-2xl border-2 border-gray-900 cursor-pointer overflow-hidden transition-all hover:-translate-y-1 shadow-[4px_4px_0_0_#111827]"
                                     >
                                         {doodle.image_url ? (
                                             <img src={doodle.image_url} alt={doodle.flower_name} className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform" />
