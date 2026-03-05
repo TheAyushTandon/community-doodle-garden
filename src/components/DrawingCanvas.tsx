@@ -344,14 +344,14 @@ export default function DrawingCanvas({ onCapture }: DrawingCanvasProps) {
             {/* ── Canvas ── */}
             <div
                 ref={containerRef}
-                className="relative rounded-[2rem] border-[3px] border-gray-900 shadow-[6px_6px_0px_0px_#111827] overflow-hidden bg-white select-none"
+                className="relative rounded-[2rem] border-[3px] border-gray-900 shadow-[6px_6px_0px_0px_#111827] overflow-hidden bg-white select-none aspect-square mx-auto w-full max-w-[65vh] md:max-w-[75vh]"
                 style={{ touchAction: 'none' }}
             >
                 <canvas
                     ref={canvasRef}
                     width={800}
                     height={800}
-                    className="w-full max-h-[60vh] md:max-h-[70vh] object-contain block touch-none"
+                    className="w-full h-full block touch-none"
                     onMouseDown={startDraw}
                     onMouseMove={draw}
                     onMouseUp={stopDraw}
