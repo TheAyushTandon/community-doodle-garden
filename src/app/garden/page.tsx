@@ -157,6 +157,85 @@ function Clouds() {
     );
 }
 
+// ─── Procedural Trees ────────────────────────────────────────────────────────
+function Tree({ position, normal, scale }: { position: THREE.Vector3, normal: THREE.Vector3, scale: number }) {
+    const ref = useRef<THREE.Group>(null!);
+
+    useEffect(() => {
+        if (ref.current) {
+            const target = position.clone().add(normal);
+            ref.current.lookAt(target);
+            ref.current.rotateX(Math.PI / 2);
+        }
+    }, [position, normal]);
+
+    return (
+        <group position={position} ref={ref} scale={scale}>
+            {/* Trunk */}
+            <mesh position={[0, 0.4, 0]}>
+                <cylinderGeometry args={[0.08, 0.12, 0.8, 7]} />
+                <meshStandardMaterial color="#5c4033" roughness={0.9} />
+                <Outlines thickness={0.04} color="black" />
+            </mesh>
+            {/* Canopy Layer 1 */}
+            <mesh position={[0, 1.0, 0]}>
+                <dodecahedronGeometry args={[0.5, 0]} />
+                <meshStandardMaterial color="#22c55e" roughness={0.8} />
+                <Outlines thickness={0.04} color="black" />
+            </mesh>
+            {/* Canopy Layer 2 */}
+            <mesh position={[0.1, 1.4, -0.1]}>
+                <dodecahedronGeometry args={[0.35, 0]} />
+                <meshStandardMaterial color="#4ade80" roughness={0.8} />
+                <Outlines thickness={0.04} color="black" />
+            </mesh>
+            {/* Canopy Layer 3 */}
+            <mesh position={[-0.15, 1.2, 0.2]}>
+                <dodecahedronGeometry args={[0.3, 0]} />
+                <meshStandardMaterial color="#16a34a" roughness={0.8} />
+                <Outlines thickness={0.04} color="black" />
+            </mesh>
+        </group>
+    );
+}
+
+function Trees({ radius, count = 40 }: { radius: number, count?: number }) {
+    const treeData = useMemo(() => {
+        const pts: { pos: THREE.Vector3, norm: THREE.Vector3, scale: number }[] = [];
+        const phi = Math.PI * (Math.sqrt(5) - 1); // Golden angle
+
+        for (let i = 0; i < count; i++) {
+            const y = 1 - (i / (count - 1)) * 2; // y goes from 1 to -1
+            const r = Math.sqrt(1 - y * y);
+            const theta = phi * i;
+
+            const x = Math.cos(theta) * r;
+            const z = Math.sin(theta) * r;
+
+            const norm = new THREE.Vector3(x, y, z).normalize();
+            // Sink them very slightly into the grass so they don't float
+            const pos = norm.clone().multiplyScalar(radius - 0.05);
+
+            // Randomize scale a bit between 0.3 and 0.6
+            // We use a seeded pseudo-random approach based on index so it's stable
+            const hash = Math.sin(i * 1234.5678) * 10000;
+            const randomFraction = hash - Math.floor(hash);
+            const scale = 0.3 + randomFraction * 0.4;
+
+            pts.push({ pos, norm, scale });
+        }
+        return pts;
+    }, [radius, count]);
+
+    return (
+        <group>
+            {treeData.map((t, i) => (
+                <Tree key={`tree-${i}`} position={t.pos} normal={t.norm} scale={t.scale} />
+            ))}
+        </group>
+    );
+}
+
 // ─── Floating Petals ──────────────────────────────────────────────────────────
 function Petals() {
     const count = 28;
@@ -258,6 +337,7 @@ function Scene({ doodles, onSelect, currentUserId }: { doodles: Doodle[]; onSele
             <GlobeOutline />
             <Atmosphere />
             <Clouds />
+            <Trees radius={GLOBE_R} count={50} />
             <Petals />
             {doodles.map(d => (
                 <FlowerPin key={d.id} doodle={d} onSelect={onSelect} isOwner={!!currentUserId && d.user_id === currentUserId} />
