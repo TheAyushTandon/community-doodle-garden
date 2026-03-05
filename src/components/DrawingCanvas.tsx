@@ -350,8 +350,8 @@ export default function DrawingCanvas({ onCapture }: DrawingCanvasProps) {
                 <canvas
                     ref={canvasRef}
                     width={800}
-                    height={560}
-                    className="w-full h-auto block"
+                    height={800}
+                    className="w-full max-h-[60vh] md:max-h-[70vh] object-contain block touch-none"
                     onMouseDown={startDraw}
                     onMouseMove={draw}
                     onMouseUp={stopDraw}
